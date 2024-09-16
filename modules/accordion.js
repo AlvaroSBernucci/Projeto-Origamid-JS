@@ -1,15 +1,23 @@
-export default function initAccordion(){
-  const perguntasFaq = document.querySelectorAll('.faq-lista dt');
-
-  function respFaq(pergunta){
-      pergunta.nextElementSibling.classList.toggle(pergunta.dataset.anime)
-      pergunta.classList.toggle(pergunta.dataset.anime)
+export default class Accordion{
+  constructor(perguntas){
+    this.perguntas = document.querySelectorAll(perguntas);
+    this.animation = 'show-down';
+  }
+  // const perguntasFaq = document.querySelectorAll('.faq-lista dt');
+  toggleAccordion(pergunta){
+      pergunta.nextElementSibling.classList.toggle(this.animation)
+      pergunta.classList.toggle(this.animation)
   }
   
-  
-  perguntasFaq.forEach((pergunta) => {
-    pergunta.addEventListener('click',(() => {
-      respFaq(pergunta);
-    }))
-  });
+  addEventAccordion(){
+    this.perguntas.forEach((pergunta) => {
+      pergunta.addEventListener('click',(() => {
+        this.toggleAccordion(pergunta);
+      }));
+    });
+  }
+  init(){
+    this.addEventAccordion();
+    return this;
+  }
 }

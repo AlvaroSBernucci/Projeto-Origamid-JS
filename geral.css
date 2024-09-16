@@ -415,5 +415,8 @@ body {
   .js .dropdown-menu{
     position: static;
   }
+  .js .numeros-grid{
+    grid-column: 1/-1;
+  }
 
 }

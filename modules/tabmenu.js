@@ -1,19 +1,25 @@
-export default function initTab(){
-  const animaisImagens = document.querySelectorAll('.animais-lista img');
-  const animaisSecao = document.querySelectorAll('.animais-descricao section');
-    if(animaisSecao.length && animaisImagens.length){
-    animaisSecao[0].classList.add(animaisSecao[0].dataset.anime);
-      function adicionarClasse(index){
-        animaisSecao.forEach((secao) => {
-          secao.classList.remove(secao.dataset.anime);
-        });
-        animaisSecao[index].classList.add(animaisSecao[index].dataset.anime);
-      }
-  
-      animaisImagens.forEach((imagem,index) =>{
-        imagem.addEventListener('click',(() =>  adicionarClasse(index)));
-      })
-    }
+export default class TabMenu{
+  constructor(imagens, secoes){
+    this.imagens = document.querySelectorAll(imagens);
+    this.secoes = document.querySelectorAll(secoes);
+
+    this.adicionarClasse = this.adicionarClasse.bind(this);
   }
   
-  initTab();
+  adicionarClasse(index){
+    this.secoes.forEach((secao) => {
+      secao.classList.remove(secao.dataset.anime);
+    });
+    this.secoes[index].classList.add(this.secoes[index].dataset.anime);
+  }
+  addEventTabMenu(){
+    this.secoes[0].classList.add(this.secoes[0].dataset.anime);
+    this.imagens.forEach((imagem,index) =>{
+      imagem.addEventListener('click',(() =>  this.adicionarClasse(index)));
+    })
+  }
+  init(){
+    this.addEventTabMenu();
+    return this;
+  }
+}
