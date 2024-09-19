@@ -38,7 +38,7 @@ meuMobile.init();
 const funcionamento = new Funcionamento('[data-horario]');
 funcionamento.init();
 
-fetchAnimais('/fetch.json', '.numeros-grid');
+fetchAnimais('./fetch.json', '.numeros-grid');
 
 debounce();
 initFetchBitcoin();
