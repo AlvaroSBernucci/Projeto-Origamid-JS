@@ -4,7 +4,6 @@ export default function outsideClick(element,events,callback){
       setTimeout(() => html.addEventListener(userEvent,outsideHandleClick));
     })
     function outsideHandleClick(event){
-      console.log(event);
       if(!element.contains(event.target)){
       events.forEach(userEvent =>{
         html.removeEventListener(userEvent,outsideHandleClick)

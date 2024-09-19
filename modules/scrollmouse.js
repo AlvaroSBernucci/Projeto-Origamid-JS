@@ -1,17 +1,41 @@
-export default function animaScroll(){
-  const scrollMouse = document.querySelectorAll('[data-scroll^="show-scroll"]');
-  if(scrollMouse.length){
-    const ativarScroll = window.innerHeight * 0.6;
-    function scroll(){
-      scrollMouse.forEach((secao) =>{
-        const distancia = secao.getBoundingClientRect().top;
-        if(distancia - ativarScroll < 0){
-          secao.classList.add('ativo');
-        }
-      })
-    }
-    scroll();
-    window.addEventListener('scroll',scroll);
+import debounce from "./debounce.js";
+export default class AnimaScroll{
+  constructor(sections){
+    this.sections = document.querySelectorAll(sections);
+    this.windowMetade = window.innerHeight * 0.6;
+    
+    this.pegarDistancias = this.pegarDistancias.bind(this);
+    this.animarScroll = this.animarScroll.bind(this);
+  }  
+
+  pegarDistancias(){
+    this.distancia = [...this.sections].map((secao) =>{
+      const distanciaTopo = secao.offsetTop;
+      return {
+        element: secao,
+        distanciaTopo: Math.floor(distanciaTopo - this.windowMetade),
+      }
+    })
+  }  
+  
+  animarScroll(){
+    this.distancia.forEach((secao) => {
+      if (window.scrollY > secao.distanciaTopo) {
+        secao.element.classList.add('ativo');
+      } else if (secao.element.classList.contains('ativo')) {
+        secao.element.classList.remove('ativo');
+      }
+    })
   }
 
+
+  addEventScroll(){
+    window.addEventListener('scroll',debounce(this.animarScroll,100));
+  }
+  init(){
+    this.pegarDistancias();
+    this.animarScroll();
+    this.addEventScroll();
+    return this;
+  }
 }

@@ -1,9 +1,14 @@
-export default function initAnimaNumeros(){
-  
-  const numeros = document.querySelectorAll('.numeros-animal span');
+export default class AnimaNumeros{
 
-  function animaNumeros(){
-      numeros.forEach((numero) => {
+  constructor(numeros, observerClass, observeSection){
+    this.numeros = document.querySelectorAll(numeros);
+    this.observerClass = observerClass;
+    this.observeSection = document.querySelector(observeSection);
+
+    this.animaNumeros = this.animaNumeros.bind(this);
+    this.handleMutation = this.handleMutation.bind(this);
+  }
+  static incrementar(numero){
         const numFinal = +numero.innerHTML;
         const incremento = numFinal/200;
         let somador = 0;
@@ -15,15 +20,24 @@ export default function initAnimaNumeros(){
             clearInterval(intervalo);
           }
         },);
-      });
     }
-    function handleMutation(mutation){
-      if(mutation[0].target.classList.contains('ativo')){
-        animaNumeros();
-        observer.disconnect();
+    animaNumeros(){
+      this.numeros.forEach((numero) => this.constructor.incrementar(numero));
+    }
+    handleMutation(mutation){
+      if (mutation[0].target.classList.contains(this.observerClass)){
+        this.animaNumeros();
+        this.observer.disconnect();
       }
     }
-      const sectionNumeros = document.querySelector('.numeros');
-      const observer = new MutationObserver(handleMutation);
-      observer.observe(sectionNumeros,{attributes: true});
+    createObserver(){
+      this.observer = new MutationObserver(this.handleMutation);
+      this.observer.observe(this.observeSection,{attributes: true});
+    }
+    init(){
+      if (this.numeros.length || this.observerClass || this.observeSection){
+        this.createObserver();
+      }
+      return this;
+    }
 }
