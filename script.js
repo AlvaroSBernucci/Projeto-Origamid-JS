@@ -10,6 +10,7 @@ import fetchAnimais from './modules/fetchanimais.js';
 import initFetchBitcoin from './modules/fetchbitcoin.js';
 import debounce from './modules/debounce.js';
 import Funcionamento from './modules/dateobject.js';
+import SlideNav from './modules/slide.js';
 
 const scrollSuave = new ScrollSuave('a[href^="#"]');
 scrollSuave.init();
@@ -37,6 +38,11 @@ meuMobile.init();
 
 const funcionamento = new Funcionamento('[data-horario]');
 funcionamento.init();
+
+const slide = new SlideNav('.slide-wrapper','.slide');
+slide.init();
+slide.changeSlide(0);
+slide.addControle('.custom-slide');
 
 fetchAnimais('./fetch.json', '.numeros-grid');
 
